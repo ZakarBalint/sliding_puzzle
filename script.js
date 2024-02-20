@@ -1,7 +1,11 @@
 let puzzle_array = [1,2,3,4,5,6,7,8,' '];
 let width = 3;
 
+let numberInversions = 0;
+
 shuffle();
+
+display();
 
 function shuffle()
 {
@@ -11,55 +15,69 @@ function shuffle()
 
         [puzzle_array[i], puzzle_array[randomIndex]] = [puzzle_array[randomIndex], puzzle_array[i]]
     }    
-
-    
 }
 
+
 function numberOfInversions()
-{
-    let numberInversions = 0;
+{    
 
     for(let i = 0; i < puzzle_array.length - 1; i++)
     {
-        if(puzzle_array[i] == ' ') continue;
-        
-        for (let j = i+1; j < puzzle_array.length; j++) {
-            if ((puzzle_array[i] > puzzle_array[j]) && (puzzle_array[j] != ' '))
-                numberInversions++;
+        if(puzzle_array[i] == ' ') 
+        {
+            continue;
         }
-
-        return numberInversions;
-    }    
+        
+        for (let j = i+1; j < puzzle_array.length; j++) 
+        {
+            if ((puzzle_array[i] > puzzle_array[j]) && (puzzle_array[j] != ' '))
+            {
+                numberInversions++;
+            }                
+        }        
+    }
 }
 
 function GetRowNumberFromBelow()
 {
-    let row = puzzle_array.findIndex(' ') / 3;
- 
+    let row = puzzle_array.indexOf(' ') / 3;
+
     return width - row;
 }
  
 function isSlidePuzzleSolvable()
 {
+    numberInversions = numberOfInversions();
 
     if (width % 2 != 0)
-        return (numberOfInversions % 2 == 0);
- 
+    {
+        return (numberInversions % 2 == 0);
+    }        
+
     let rowNumber = GetRowNumberFromBelow();
  
     if (rowNumber % 2 != 0)
-        return (numberOfInversions % 2 == 0);
+    {
+        return (numberInversions % 2 == 0);
+    }        
     else
-        return (numberOfInversions % 2 != 0);
+    {
+        return (numberInversions % 2 != 0);
+    }
 }
 
 function display()
 {
-    var doc = document.querySelectorAll("#asd div");
+    var mezok = document.querySelectorAll("#tabla div");
 
-    for(let i = 0; i < doc.length; i++)
+    for(let i = 0; i < mezok.length; i++)
     {
-        doc[i].innerText = puzzle_array[i];           
-    } 
+        mezok[i].innerText = puzzle_array[i];
+        mezok[i].addEventListener("click", movePuzzle());
+    }
 }
 
+function movePuzzle()
+{
+    console.log("asd");
+}
