@@ -73,11 +73,34 @@ function display()
     for(let i = 0; i < mezok.length; i++)
     {
         mezok[i].innerText = puzzle_array[i];
-        mezok[i].addEventListener("click", movePuzzle());
+        mezok[i].addEventListener("click", movePuzzle);
     }
 }
 
 function movePuzzle()
 {
-    console.log("asd");
+    let selected_puzzle_index = puzzle_array.indexOf(parseInt(this.innerText));
+    let empty_puzzle_index = puzzle_array.indexOf(' ');
+
+    if(selected_puzzle_index != -1)
+    {
+        if(isPuzzleMovable(selected_puzzle_index, empty_puzzle_index))
+        {
+
+        }
+    }
+
+}
+
+function isPuzzleMovable(selected_puzzle_index, empty_puzzle_index)
+{
+    if(selected_puzzle_index++ == empty_puzzle_index || selected_puzzle_index-- == empty_puzzle_index ||
+        selected_puzzle_index - 3 == empty_puzzle_index || selected_puzzle_index + 3 == empty_puzzle_index)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
 }
