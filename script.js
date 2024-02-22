@@ -1,7 +1,6 @@
 let puzzle_array = [1,2,3,4,5,6,7,8,' '];
+const sorted_array = [1,2,3,4,5,6,7,8,' '];
 let width = 3;
-
-let numberInversions = 0;
 
 shuffle();
 
@@ -17,53 +16,47 @@ function shuffle()
     }    
 }
 
+/*
+public boolean isSolvable(int[] puzzle)
+{
+    int parity = 0;
+    int gridWidth = (int) Math.sqrt(puzzle.length);
+    int row = 0; // the current row we are on
+    int blankRow = 0; // the row with the blank tile
 
-function numberOfInversions()
-{    
-
-    for(let i = 0; i < puzzle_array.length - 1; i++)
+    for (int i = 0; i < puzzle.length; i++)
     {
-        if(puzzle_array[i] == ' ') 
-        {
+        if (i % gridWidth == 0) { // advance to next row
+            row++;
+        }
+        if (puzzle[i] == 0) { // the blank tile
+            blankRow = row; // save the row on which encountered
             continue;
         }
-        
-        for (let j = i+1; j < puzzle_array.length; j++) 
+        for (int j = i + 1; j < puzzle.length; j++)
         {
-            if ((puzzle_array[i] > puzzle_array[j]) && (puzzle_array[j] != ' '))
+            if (puzzle[i] > puzzle[j] && puzzle[j] != 0)
             {
-                numberInversions++;
-            }                
-        }        
+                parity++;
+            }
+        }
+    }
+
+    if (gridWidth % 2 == 0) { // even grid
+        if (blankRow % 2 == 0) { // blank on odd row; counting from bottom
+            return parity % 2 == 0;
+        } else { // blank on even row; counting from bottom
+            return parity % 2 != 0;
+        }
+    } else { // odd grid
+        return parity % 2 == 0;
     }
 }
+*/
 
-function GetRowNumberFromBelow()
+function isPuzzleSolveable()
 {
-    let row = puzzle_array.indexOf(' ') / 3;
-
-    return width - row;
-}
- 
-function isSlidePuzzleSolvable()
-{
-    numberInversions = numberOfInversions();
-
-    if (width % 2 != 0)
-    {
-        return (numberInversions % 2 == 0);
-    }        
-
-    let rowNumber = GetRowNumberFromBelow();
- 
-    if (rowNumber % 2 != 0)
-    {
-        return (numberInversions % 2 == 0);
-    }        
-    else
-    {
-        return (numberInversions % 2 != 0);
-    }
+    
 }
 
 function display()
@@ -84,23 +77,38 @@ function movePuzzle()
 
     if(selected_puzzle_index != -1)
     {
-        if(isPuzzleMovable(selected_puzzle_index, empty_puzzle_index))
+        if(isPuzzleMoveable(selected_puzzle_index, empty_puzzle_index))
         {
+            [puzzle_array[selected_puzzle_index], puzzle_array[empty_puzzle_index]] = [puzzle_array[empty_puzzle_index], puzzle_array[selected_puzzle_index]];            
+            display();
 
+            if(isPuzzleSolved())
+            {
+                puzzleSolved();
+            }
         }
     }
-
 }
 
-function isPuzzleMovable(selected_puzzle_index, empty_puzzle_index)
+function isPuzzleMoveable(selected_puzzle_index, empty_puzzle_index)
 {
-    if(selected_puzzle_index++ == empty_puzzle_index || selected_puzzle_index-- == empty_puzzle_index ||
-        selected_puzzle_index - 3 == empty_puzzle_index || selected_puzzle_index + 3 == empty_puzzle_index)
+    if(selected_puzzle_index + 1 == empty_puzzle_index || selected_puzzle_index - 1 == empty_puzzle_index ||
+        selected_puzzle_index + 3 == empty_puzzle_index || selected_puzzle_index - 3 == empty_puzzle_index)
         {
             return true;
         }
         else
-        {
+        {            
             return false;
         }
+}
+
+function isPuzzleSolved()
+{
+    return JSON.stringify(puzzle_array) === JSON.stringify(sorted_array);
+}
+
+function puzzleSolved()
+{
+    console.log("Kirakva!");
 }
