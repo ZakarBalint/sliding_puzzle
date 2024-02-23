@@ -1,8 +1,15 @@
 let puzzle_array = [1,2,3,4,5,6,7,8,' '];
 const sorted_array = [1,2,3,4,5,6,7,8,' '];
 let width = 3;
+let moves = 0;
 
-shuffle();
+do
+{
+    shuffle();
+}
+while(!isPuzzleSolveable(puzzle_array));
+
+//puzzle_array = [1,2,3,4,5,6,7,' ',8]
 
 display();
 
@@ -16,15 +23,14 @@ function shuffle()
     }    
 }
 
-/*
-public boolean isSolvable(int[] puzzle)
+function isPuzzleSolveable(puzzle)
 {
-    int parity = 0;
-    int gridWidth = (int) Math.sqrt(puzzle.length);
-    int row = 0; // the current row we are on
-    int blankRow = 0; // the row with the blank tile
+    let parity = 0;
+    let gridWidth = Math.sqrt(puzzle.length);
+    let row = 0; // the current row we are on
+    let blankRow = 0; // the row with the blank tile
 
-    for (int i = 0; i < puzzle.length; i++)
+    for (let i = 0; i < puzzle.length; i++)
     {
         if (i % gridWidth == 0) { // advance to next row
             row++;
@@ -33,7 +39,7 @@ public boolean isSolvable(int[] puzzle)
             blankRow = row; // save the row on which encountered
             continue;
         }
-        for (int j = i + 1; j < puzzle.length; j++)
+        for (let j = i + 1; j < puzzle.length; j++)
         {
             if (puzzle[i] > puzzle[j] && puzzle[j] != 0)
             {
@@ -51,12 +57,6 @@ public boolean isSolvable(int[] puzzle)
     } else { // odd grid
         return parity % 2 == 0;
     }
-}
-*/
-
-function isPuzzleSolveable()
-{
-    
 }
 
 function display()
@@ -81,6 +81,7 @@ function movePuzzle()
         {
             [puzzle_array[selected_puzzle_index], puzzle_array[empty_puzzle_index]] = [puzzle_array[empty_puzzle_index], puzzle_array[selected_puzzle_index]];            
             display();
+            moves++;
 
             if(isPuzzleSolved())
             {
@@ -110,5 +111,19 @@ function isPuzzleSolved()
 
 function puzzleSolved()
 {
-    console.log("Kirakva!");
+    var mezok = document.querySelectorAll("#tabla div");
+
+    for(let i = 0; i < mezok.length; i++)
+    {        
+        mezok[i].removeEventListener("click", movePuzzle);
+    }
+
+    document.getElementById("num_moves").innerText += moves;
+    document.getElementById("win_div").style.display = "block";   
 }
+
+const new_game_btn = document.getElementById("new_game_btn")
+
+new_game_btn.addEventListener("click", function() {
+    location.reload();
+})
