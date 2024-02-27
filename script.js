@@ -1,17 +1,43 @@
-let puzzle_array = [1,2,3,4,5,6,7,8,' '];
-const sorted_array = [1,2,3,4,5,6,7,8,' '];
-let width = 3;
+let puzzle_array = [];
+let sorted_array = [];
 let moves = 0;
 
-do
+const difficulty_select = document.getElementById("difficulty_select");
+
+let width = parseInt(difficulty_select.value);
+fillArray();
+
+difficulty_select.addEventListener("change", function() {
+    width = parseInt(difficulty_select.value);
+
+    sorted_array = [];
+    puzzle_array = [];
+
+    console.log(sorted_array, puzzle_array);
+
+    fillArray();
+})
+
+function fillArray()
 {
+    for(let i = 1; i <= (width * width); i++)
+    {
+        if(i == (width * width))
+        {
+            sorted_array.push(' '); 
+        }
+        else
+        {
+            sorted_array.push(i);
+        }
+    }
+
+    puzzle_array = [...sorted_array];
+
     shuffle();
 }
-while(!isPuzzleSolveable(puzzle_array));
 
 //puzzle_array = [1,2,3,4,5,6,7,' ',8]
-
-display();
 
 function shuffle()
 {
@@ -20,6 +46,15 @@ function shuffle()
         let randomIndex = Math.floor(Math.random() * (i + 1));
 
         [puzzle_array[i], puzzle_array[randomIndex]] = [puzzle_array[randomIndex], puzzle_array[i]]
+    }
+    
+    if(isPuzzleSolveable(puzzle_array))
+    {
+        display();
+    }
+    else
+    {
+        shuffle();
     }    
 }
 
@@ -60,14 +95,29 @@ function isPuzzleSolveable(puzzle)
 }
 
 function display()
-{
-    var mezok = document.querySelectorAll("#tabla div");
+{   
+    var tabla = document.getElementById("tabla");
+    var ki = ""
+
+    for(let i = 0; i < width; i++)
+    {
+        ki += "<tr>"
+        for(let j = i * width; j < ((i * width) + width); j++)
+        {
+            ki += "<td class='table-item'>" + puzzle_array[j] + "</td>"
+        }
+        ki += "</tr>"
+    }
+
+    tabla.innerHTML = ki;
+
+    var mezok = document.querySelectorAll("#tabla td");
 
     for(let i = 0; i < mezok.length; i++)
     {
         mezok[i].innerText = puzzle_array[i];
         mezok[i].addEventListener("click", movePuzzle);
-    }
+    }    
 }
 
 function movePuzzle()
@@ -94,7 +144,7 @@ function movePuzzle()
 function isPuzzleMoveable(selected_puzzle_index, empty_puzzle_index)
 {
     if(selected_puzzle_index + 1 == empty_puzzle_index || selected_puzzle_index - 1 == empty_puzzle_index ||
-        selected_puzzle_index + 3 == empty_puzzle_index || selected_puzzle_index - 3 == empty_puzzle_index)
+        selected_puzzle_index + width == empty_puzzle_index || selected_puzzle_index - width == empty_puzzle_index)
         {
             return true;
         }

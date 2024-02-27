@@ -4,24 +4,21 @@ body
     color: white;    
 }
 
-.grid-container {
-    display: grid;
-    grid-template-columns: auto auto auto;
+.table-container {
     background-color: gray;
     padding: 10px;
-    width: 40vw;
-    aspect-ratio: 1;
+    width: 40svw;
     margin: auto;
+    aspect-ratio: 1 / 1;
 }
 
-.grid-item {
+.table-item {
     background-color: rgba(255, 255, 255, 0.8);
     border: 1px solid rgba(0, 0, 0, 0.8);
-    padding: 20px;
-    font-size: 5rem;
+    padding: 10px;    
+    font-size: 3rem;
     text-align: center;
     color: black;
-    line-height: 2.2;    
 }
 
 h1{
@@ -44,4 +41,10 @@ h1{
 
 
     display: none;
+}
+
+#difficulty_select_div
+{
+    text-align: center;
+    padding: 10px;
 }
